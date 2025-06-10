@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+.dashboard-container {
+  font-family: 'Inter', sans-serif;
+  padding: 2rem;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+}
+
+.dashboard-container h2 {
+  text-align: center;
+  color: #1e2a60;
+  margin-bottom: 2rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.visitor-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.visitor-table th,
+.visitor-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.visitor-table th {
+  background-color: #1e2a60;
+  color: white;
+  font-weight: 600;
+}
+
+.visitor-table tr:hover {
+  background-color: #f9f9f9;
+}
