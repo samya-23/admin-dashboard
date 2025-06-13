@@ -1,38 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-  // Sample dummy data
-  const visitorData = [
-    { id: 1, name: "Samya Soni", email: "samya@example.com", phone: "9876543210" },
-    { id: 2, name: "Aman Gupta", email: "aman@example.com", phone: "9123456789" },
-  ];
+  const [visitorData, setVisitorData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchVisitors = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/visitors");
+        if (!res.ok) throw new Error("Failed to fetch data");
+        const data = await res.json();
+        setVisitorData(data);
+      } catch (err) {
+        setError("Unable to load visitor data");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVisitors();
+  }, []);
 
   return (
     <div className="dashboard-container">
       <h2>Visitor Submissions</h2>
-      <div className="table-wrapper">
-        <table className="visitor-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Full Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-            </tr>
-          </thead>
-          <tbody>
-            {visitorData.map((visitor, index) => (
-              <tr key={visitor.id}>
-                <td>{index + 1}</td>
-                <td>{visitor.name}</td>
-                <td>{visitor.email}</td>
-                <td>{visitor.phone}</td>
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p className="error">{error}</p>
+      ) : visitorData.length === 0 ? (
+        <p>No visitors yet.</p>
+      ) : (
+        <div className="table-wrapper">
+          <table className="visitor-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Submitted At</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {visitorData.map((visitor, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{visitor.name}</td>
+                  <td>{visitor.email}</td>
+                  <td>{visitor.phone}</td>
+                  <td>{new Date(visitor.timestamp).toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

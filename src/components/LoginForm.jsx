@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './LoginForm.css';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -10,7 +12,13 @@ const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Login attempted:', formData);
+
+    // Dummy admin check (you can add real auth later)
+    if (formData.username === 'admin' && formData.password === 'admin') {
+      navigate("/dashboard");
+    } else {
+      alert("Invalid credentials");
+    }
   };
 
   return (
