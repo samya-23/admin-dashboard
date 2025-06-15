@@ -7,25 +7,83 @@
   min-height: 100vh;
 }
 
-.dashboard-container h2 {
-  text-align: center;
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto 2rem;
+}
+
+.dashboard-header h2 {
   color: #1e2a60;
-  margin-bottom: 2rem;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.logout-btn {
+  background-color: #ff4757;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #e84118;
+}
+
+.dashboard-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+  background: #ffffff;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.dashboard-tools input {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  flex: 1;
+  min-width: 200px;
+}
+
+.dashboard-tools button {
+  padding: 0.5rem 1rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.stats-box {
+  font-weight: bold;
+  color: #1e2a60;
 }
 
 .table-wrapper {
-  overflow-x: auto;
   max-width: 1000px;
-  margin: 0 auto;
+  margin: 0 auto 2rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
 }
 
 .visitor-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  border-radius: 10px;
-  overflow: hidden;
 }
 
 .visitor-table th,
@@ -33,6 +91,7 @@
   padding: 1rem;
   text-align: left;
   border-bottom: 1px solid #eee;
+  white-space: nowrap;
 }
 
 .visitor-table th {
@@ -43,4 +102,42 @@
 
 .visitor-table tr:hover {
   background-color: #f9f9f9;
+  transition: background-color 0.2s ease;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  gap: 6px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border: 1px solid #007bff;
+  background: white;
+  color: #007bff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination button.active {
+  background: #007bff;
+  color: white;
+}
+
+.chart-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.error {
+  text-align: center;
+  color: #d32f2f;
+  font-weight: 500;
+  margin-top: 1rem;
 }
