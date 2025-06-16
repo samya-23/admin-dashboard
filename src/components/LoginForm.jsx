@@ -13,14 +13,13 @@ const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Dummy login: admin / admin
     if (formData.username === 'admin' && formData.password === 'admin') {
-      const expiryTime = new Date().getTime() + 5 * 60 * 1000; // 5 min
-      localStorage.setItem("loggedIn", "true");
-      localStorage.setItem("sessionExpiry", expiryTime);
-      navigate("/dashboard");
+      const expiryTime = new Date().getTime() + 30 * 1000;
+      localStorage.setItem('loggedIn', 'true');
+      localStorage.setItem('sessionExpiry', expiryTime);
+      navigate('/dashboard');
     } else {
-      alert("Invalid credentials");
+      alert('Invalid credentials');
     }
   };
 

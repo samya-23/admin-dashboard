@@ -20,45 +20,93 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 2;
+  const [sessionExpired, setSessionExpired] = useState(false);
+  const rowsPerPage = 5;
 
   const dummyVisitors = [
     {
       name: "Riya Kapoor",
       email: "riya@example.com",
       phone: "9876543210",
-      timestamp: new Date().toISOString(),
+      timestamp: new Date("2025-06-16T10:30:00").toISOString(),
     },
     {
       name: "Arjun Mehta",
       email: "arjun@example.com",
       phone: "9123456789",
-      timestamp: new Date(Date.now() - 3600000).toISOString(),
+      timestamp: new Date("2025-06-16T14:45:00").toISOString(),
     },
     {
       name: "Sneha Sharma",
       email: "sneha@example.com",
       phone: "9988776655",
-      timestamp: new Date(Date.now() - 7200000).toISOString(),
+      timestamp: new Date("2025-06-15T09:15:00").toISOString(),
+    },
+    {
+      name: "Karan Patel",
+      email: "karan@example.com",
+      phone: "9012345678",
+      timestamp: new Date("2025-06-15T11:00:00").toISOString(),
+    },
+    {
+      name: "Divya Singh",
+      email: "divya@example.com",
+      phone: "8901234567",
+      timestamp: new Date("2025-06-15T18:20:00").toISOString(),
+    },
+    {
+      name: "Aditya Rao",
+      email: "aditya@example.com",
+      phone: "8790123456",
+      timestamp: new Date("2025-06-14T13:10:00").toISOString(),
     },
   ];
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem("loggedIn");
-    if (!isLoggedIn) {
-      navigate("/login");
-      return;
+    const loggedIn = localStorage.getItem("loggedIn");
+    if (loggedIn !== "true") {
+      navigate("/login", { replace: true });
     }
+  }, [navigate]);
 
+  useEffect(() => {
+    const loggedIn = localStorage.getItem("loggedIn");
+    const expiryTime = localStorage.getItem("sessionExpiry");
+
+    if (loggedIn === "true" && expiryTime) {
+      const interval = setInterval(() => {
+        if (new Date().getTime() > Number(expiryTime)) {
+          localStorage.removeItem("loggedIn");
+          localStorage.removeItem("sessionExpiry");
+          setSessionExpired(true);
+
+          // ⏳ Redirect to login after 30s
+          setTimeout(() => {
+            navigate("/login", { replace: true });
+          }, 30000);
+
+          clearInterval(interval);
+        }
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     const fetchVisitors = async () => {
       try {
         const res = await fetch("http://localhost:5000/api/visitors");
         if (!res.ok) throw new Error("Failed to fetch data");
         const data = await res.json();
-        setVisitorData(data);
-        setFilteredData(data);
+        if (Array.isArray(data) && data.length > 0) {
+          setVisitorData(data);
+          setFilteredData(data);
+          setError("");
+        } else {
+          throw new Error("Empty or invalid data from backend");
+        }
       } catch (err) {
-        console.warn("Backend unreachable. Showing dummy data.", err);
+        console.warn("⚠️ Backend unreachable. Using dummy data.", err);
         setVisitorData(dummyVisitors);
         setFilteredData(dummyVisitors);
         setError("⚠️ Backend not connected. Showing dummy data.");
@@ -66,21 +114,13 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
-
     fetchVisitors();
-  }, [navigate]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      localStorage.removeItem("loggedIn");
-      navigate("/login");
-    }, 5 * 60 * 1000);
-    return () => clearTimeout(timer);
-  }, [navigate]);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("loggedIn");
-    navigate("/login");
+    localStorage.removeItem("sessionExpiry");
+    navigate("/login", { replace: true });
   };
 
   const handleSearch = (e) => {
@@ -117,6 +157,11 @@ const Dashboard = () => {
     else acc.push({ date, count: 1 });
     return acc;
   }, []);
+
+  const handleModalClose = () => {
+    setSessionExpired(false);
+    navigate("/login", { replace: true });
+  };
 
   return (
     <div className="dashboard-container">
@@ -199,6 +244,18 @@ const Dashboard = () => {
           </BarChart>
         </ResponsiveContainer>
       </div>
+
+      {sessionExpired && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <h3>Session Expired</h3>
+            <p>Your session has expired. Please login again.</p>
+            <button className="modal-btn" onClick={handleModalClose}>
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
