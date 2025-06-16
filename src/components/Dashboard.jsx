@@ -23,44 +23,7 @@ const Dashboard = () => {
   const [sessionExpired, setSessionExpired] = useState(false);
   const rowsPerPage = 5;
 
-  const dummyVisitors = [
-    {
-      name: "Riya Kapoor",
-      email: "riya@example.com",
-      phone: "9876543210",
-      timestamp: new Date("2025-06-16T10:30:00").toISOString(),
-    },
-    {
-      name: "Arjun Mehta",
-      email: "arjun@example.com",
-      phone: "9123456789",
-      timestamp: new Date("2025-06-16T14:45:00").toISOString(),
-    },
-    {
-      name: "Sneha Sharma",
-      email: "sneha@example.com",
-      phone: "9988776655",
-      timestamp: new Date("2025-06-15T09:15:00").toISOString(),
-    },
-    {
-      name: "Karan Patel",
-      email: "karan@example.com",
-      phone: "9012345678",
-      timestamp: new Date("2025-06-15T11:00:00").toISOString(),
-    },
-    {
-      name: "Divya Singh",
-      email: "divya@example.com",
-      phone: "8901234567",
-      timestamp: new Date("2025-06-15T18:20:00").toISOString(),
-    },
-    {
-      name: "Aditya Rao",
-      email: "aditya@example.com",
-      phone: "8790123456",
-      timestamp: new Date("2025-06-14T13:10:00").toISOString(),
-    },
-  ];
+  const dummyVisitors = [];
 
   useEffect(() => {
     const loggedIn = localStorage.getItem("loggedIn");
@@ -95,7 +58,9 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchVisitors = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/visitors");
+        const res = await fetch(
+          "https://codepackers.onrender.com/api/visitors"
+        );
         if (!res.ok) throw new Error("Failed to fetch data");
         const data = await res.json();
         if (Array.isArray(data) && data.length > 0) {
@@ -174,7 +139,9 @@ const Dashboard = () => {
 
       <div className="table-wrapper">
         <div className="dashboard-tools">
-          <div className="stats-box">👥 Total Visitors: {filteredData.length}</div>
+          <div className="stats-box">
+            👥 Total Visitors: {filteredData.length}
+          </div>
           <input
             type="text"
             placeholder="Search by Name or Email"
