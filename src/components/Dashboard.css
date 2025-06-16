@@ -188,3 +188,66 @@
 .modal-btn:hover {
   background-color: #142049;
 }
+@media (max-width: 768px) {
+  .dashboard-header,
+  .dashboard-tools,
+  .table-wrapper,
+  .chart-wrapper {
+    padding: 1rem;
+    margin: 0 auto 1rem;
+    max-width: 100%;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .dashboard-tools {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .visitor-table th,
+  .visitor-table td {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .logout-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .chart-wrapper {
+    padding: 1rem 0.5rem;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-tools input,
+  .dashboard-tools button {
+    width: 100%;
+  }
+
+  .stats-box {
+    font-size: 0.95rem;
+  }
+
+  .visitor-table th,
+  .visitor-table td {
+    font-size: 0.85rem;
+    padding: 0.5rem;
+  }
+}
